@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Socialism Is a Cancer | Data-Driven Comparison of Systems</title>
+<link rel="stylesheet" href="styles.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<header>
+  <h1>Socialism Is a Cancer</h1>
+  <p>Evidence-based comparison of socialist experiments, capitalist outcomes, and US policy shifts. Capitalism's short-term selection pressures produce long-term species-level progress.</p>
+  <nav>
+    <a href="#overview">Overview</a>
+    <a href="#countries">Country Rankings</a>
+    <a href="#compare">Compare</a>
+    <a href="#arguments">Arguments Debunked</a>
+    <a href="#us">US Shifts</a>
+    <a href="#theory">Theory</a>
+  </nav>
+</header>
+
+<main>
+  <section id="overview">
+    <h2>Research Overview</h2>
+    <p>Over the past century, dozens of countries have attempted socialist systems (state ownership of production, central planning, suppression of private property). Consistent results: economic stagnation or collapse, shortages, mass emigration, and high death tolls from famine, purges, and mismanagement. Estimated communist regime deaths: 65–100 million (Black Book of Communism and related demographic studies).</p>
+    <p>Market-oriented systems (secure property rights, free trade, limited government) correlate strongly with higher GDP/capita, life expectancy, innovation, and political freedom. Nordic countries rank high on economic freedom indices despite welfare states — they are not socialist.</p>
+    <div class="stats">
+      <div class="stat">Top Economic Freedom (2026 Heritage): Singapore 84.4</div>
+      <div class="stat">Bottom: North Korea 3.1, Cuba 25.2, Venezuela 27.3</div>
+      <div class="stat">US: 72.8 (22nd)</div>
+      <div class="stat">South Korea GDP/capita ~20-30× North Korea</div>
+    </div>
+  </section>
+
+  <section id="countries">
+    <h2>Ranking System</h2>
+    <p>Composite score (0–100) weighting: Economic Freedom Index (35%), Political Freedom (Freedom House, 25%), GDP per capita PPP relative (20%), Life Expectancy (20%). Higher scores = better human outcomes. Data approximate from recent Heritage, Freedom House, World Bank sources.</p>
+    <canvas id="rankingChart"></canvas>
+    <table id="rankingTable">
+      <thead><tr><th>Country</th><th>System</th><th>Econ Free</th><th>Pol Free</th><th>Score</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </section>
+
+  <section id="compare">
+    <h2>Interactive Comparison</h2>
+    <label>Select countries:</label>
+    <select id="countrySelect" multiple size="8"></select>
+    <button id="compareBtn">Compare Selected</button>
+    <canvas id="compareChart"></canvas>
+    <div id="compareDetails"></div>
+  </section>
+
+  <section id="arguments">
+    <h2>Positive Arguments for Socialism — Debunked</h2>
+    <div class="argument">
+      <h3>1. Greater Equality / Less Inequality</h3>
+      <p><strong>Claim:</strong> Socialism redistributes to reduce Gini coefficients and poverty.</p>
+      <p><strong>Facts:</strong> Absolute living standards matter more. Market economies produce far higher absolute wealth for the bottom. Command economies equalized poverty (e.g., Soviet shortages, Venezuelan collapse where poverty hit ~90%+). Post-communist transitions raised incomes for nearly all. Nordic equality is in high-trust, high-freedom capitalist systems with private ownership.</p>
+    </div>
+    <div class="argument">
+      <h3>2. Free Healthcare & Education</h3>
+      <p><strong>Claim:</strong> Universal provision improves health and literacy.</p>
+      <p><strong>Facts:</strong> Literacy and basic health improved in many places under early industrialization or markets. Socialist systems often had rationed care, lower quality, and lagged innovation. US leads medical innovation; life expectancy gaps are often lifestyle/obesity related. Emigration flows from socialist to capitalist countries, not reverse. Cuba's metrics often exclude political prisoners and rely on selective reporting.</p>
+    </div>
+    <div class="argument">
+      <h3>3. Planned Economy Avoids Cycles / Efficient Allocation</h3>
+      <p><strong>Claim:</strong> Central planning eliminates boom-bust and waste.</p>
+      <p><strong>Facts:</strong> Mises/Hayek calculation problem: without prices, no rational allocation. Historical result: chronic shortages, black markets, waste (Great Leap backyard steel, Soviet consumer goods). Market prices convey dispersed knowledge. Socialist experiments repeatedly abandoned planning for markets (China 1978, Vietnam, Eastern Bloc).</p>
+    </div>
+    <div class="argument">
+      <h3>4. China Lifted Millions Out of Poverty</h3>
+      <p><strong>Claim:</strong> Socialism works because of Chinese growth.</p>
+      <p><strong>Facts:</strong> Pre-1978 Maoist China had famine (Great Leap: 15–45M deaths) and stagnation. Post-Deng market reforms, special economic zones, private enterprise, and trade openness drove the growth. Remaining one-party rule and state firms suppress full potential; economic freedom score remains low (~48). Growth is despite, not because of, pure socialism.</p>
+    </div>
+    <div class="argument">
+      <h3>5. Worker Ownership Ends Exploitation</h3>
+      <p><strong>Claim:</strong> Public ownership gives workers control and ends profit extraction.</p>
+      <p><strong>Facts:</strong> In practice, nomenklatura and party elites extracted more; workers had no exit rights. Productivity collapsed without residual claimancy. Market wages and voluntary contracts reflect marginal productivity; forced labor and gulags were common under "worker states."</p>
+    </div>
+  </section>
+
+  <section id="us">
+    <h2>US Moves Toward Socialism and Effects</h2>
+    <ul>
+      <li><strong>New Deal (1930s):</strong> NIRA cartels, wage/price controls, expanded government. Cole & Ohanian (UCLA): policies prolonged Depression by ~7 years by keeping wages/prices high, reducing employment and output.</li>
+      <li><strong>Great Society (1960s):</strong> Medicare, Medicaid, War on Poverty. Official poverty fell, but long-term: rising single-parent households (esp. Black families from ~25% to >50%), slower Black progress relative to pre-1960s trends, rising dependency, later stagflation.</li>
+      <li><strong>1970s–present expansions:</strong> Regulatory growth, ACA (mixed coverage gains, higher costs), debt/GDP rise. US economic freedom has fluctuated but remains high relative to pure socialist systems. Growth, innovation, and absolute mobility still lead most of the world.</li>
+    </ul>
+    <p>Incremental moves increase government share of GDP, distort incentives, and slow potential growth, but the US has never approached full command economy.</p>
+  </section>
+
+  <section id="theory">
+    <h2>Capitalism and Long-Term Species Longevity</h2>
+    <p>Capitalism's "brutal" short-term selection (creative destruction, competition, failure of unproductive firms) mirrors evolutionary pressures. It rewards productivity, innovation, and adaptation. Result: exponential technological progress, rising absolute living standards, longer lives, better nutrition, medical advances that protect the species against disease, famine, and environmental challenges.</p>
+    <p>Socialism suppresses selection: equalizes outcomes regardless of contribution, centralizes knowledge that cannot be centralized, and produces stagnation or collapse. Historical pattern: people vote with feet toward freer systems. For species longevity, the system that maximizes knowledge discovery and capital accumulation is superior.</p>
+    <p>Sources: Heritage Index of Economic Freedom 2026, Freedom House, Maddison Project, World Bank, Black Book of Communism, Cole & Ohanian, demographic studies of famines.</p>
+  </section>
+</main>
+
+<footer>
+  <p>Data approximate and sourced from public indices. Built for educational comparison. Domain: socialismisacancer.com</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
