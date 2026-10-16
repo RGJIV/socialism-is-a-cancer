@@ -13,73 +13,109 @@ const countries = [
   { name: "Russia (post-Soviet)", system: "Mixed/authoritarian", econ: 50.3, pol: 16, gdpRel: 40, life: 73, score: 0 }
 ];
 
-// Compute composite scores (normalized roughly)
-countries.forEach(c => {
-  const econNorm = c.econ / 100 * 35;
-  const polNorm = c.pol / 100 * 25;
-  const gdpNorm = Math.min(c.gdpRel, 100) / 100 * 20;
-  const lifeNorm = (c.life - 50) / 40 * 20; // rough scale
-  c.score = Math.round((econNorm + polNorm + gdpNorm + lifeNorm) * 10) / 10;
-});
-countries.sort((a, b) => b.score - a.score);
+function initSite() {
+  if (typeof Chart === "undefined") {
+    console.error("Chart.js not loaded");
+    document.getElementById("compareDetails").innerHTML = "<p style='color:#c0392b'>Chart library failed to load. Check connection or ad blocker.</p>";
+    return;
+  }
 
-// Populate ranking table
-const tbody = document.querySelector("#rankingTable tbody");
-countries.forEach(c => {
-  const row = tbody.insertRow();
-  row.insertCell().textContent = c.name;
-  row.insertCell().textContent = c.system;
-  row.insertCell().textContent = c.econ;
-  row.insertCell().textContent = c.pol;
-  row.insertCell().textContent = c.score;
-});
-
-// Ranking chart
-const rankingCtx = document.getElementById("rankingChart").getContext("2d");
-new Chart(rankingCtx, {
-  type: "bar",
-  data: {
-    labels: countries.map(c => c.name),
-    datasets: [{
-      label: "Composite Score",
-      data: countries.map(c => c.score),
-      backgroundColor: countries.map(c => c.score > 70 ? "#2a9d8f" : c.score > 40 ? "#e9c46a" : "#e76f51")
-    }]
-  },
-  options: { responsive: true, plugins: { title: { display: true, text: "Composite Outcome Score (higher better)" } } }
-});
-
-// Comparison select
-const select = document.getElementById("countrySelect");
-countries.forEach(c => {
-  const opt = document.createElement("option");
-  opt.value = c.name;
-  opt.textContent = c.name + " (" + c.system + ")";
-  select.appendChild(opt);
-});
-
-document.getElementById("compareBtn").addEventListener("click", () => {
-  const selected = Array.from(select.selectedOptions).map(o => o.value);
-  const data = countries.filter(c => selected.includes(c.name));
-  if (data.length < 2) { alert("Select at least 2"); return; }
-  const ctx = document.getElementById("compareChart").getContext("2d");
-  if (window.compareChart) window.compareChart.destroy();
-  window.compareChart = new Chart(ctx, {
-    type: "radar",
-    data: {
-      labels: ["Econ Free", "Pol Free", "GDP Rel", "Life Exp"],
-      datasets: data.map((c, i) => ({
-        label: c.name,
-        data: [c.econ, c.pol, c.gdpRel, c.life],
-        borderColor: ["#e63946", "#457b9d", "#2a9d8f", "#f4a261"][i % 4],
-        backgroundColor: "rgba(0,0,0,0.1)"
-      }))
-    },
-    options: { responsive: true, scales: { r: { min: 0, max: 100 } } }
+  // Compute composite scores
+  countries.forEach(c => {
+    const econNorm = c.econ / 100 * 35;
+    const polNorm = c.pol / 100 * 25;
+    const gdpNorm = Math.min(c.gdpRel, 100) / 100 * 20;
+    const lifeNorm = (c.life - 50) / 40 * 20;
+    c.score = Math.round((econNorm + polNorm + gdpNorm + lifeNorm) * 10) / 10;
   });
-  document.getElementById("compareDetails").innerHTML = data.map(c => 
-    `<p><strong>${c.name}</strong>: Score ${c.score}, Econ ${c.econ}, Pol ${c.pol}, Life ${c.life}</p>`
-  ).join("");
-});
+  countries.sort((a, b) => b.score - a.score);
 
-console.log("Site data loaded. Scores computed from public indices.");
+  // Populate ranking table
+  const tbody = document.querySelector("#rankingTable tbody");
+  if (tbody) {
+    countries.forEach(c => {
+      const row = tbody.insertRow();
+      row.insertCell().textContent = c.name;
+      row.insertCell().textContent = c.system;
+      row.insertCell().textContent = c.econ;
+      row.insertCell().textContent = c.pol;
+      row.insertCell().textContent = c.score;
+    });
+  }
+
+  // Ranking chart
+  const rankingCanvas = document.getElementById("rankingChart");
+  if (rankingCanvas) {
+    const rankingCtx = rankingCanvas.getContext("2d");
+    new Chart(rankingCtx, {
+      type: "bar",
+      data: {
+        labels: countries.map(c => c.name),
+        datasets: [{
+          label: "Composite Score",
+          data: countries.map(c => c.score),
+          backgroundColor: countries.map(c => c.score > 70 ? "#2a9d8f" : c.score > 40 ? "#e9c46a" : "#e76f51")
+        }]
+      },
+      options: { responsive: true, plugins: { title: { display: true, text: "Composite Outcome Score (higher better)" } } }
+    });
+  }
+
+  // Comparison select
+  const select = document.getElementById("countrySelect");
+  if (select) {
+    countries.forEach(c => {
+      const opt = document.createElement("option");
+      opt.value = c.name;
+      opt.textContent = c.name + " (" + c.system + ")";
+      select.appendChild(opt);
+    });
+  }
+
+  const compareBtn = document.getElementById("compareBtn");
+  if (compareBtn) {
+    compareBtn.addEventListener("click", () => {
+      const selected = Array.from(select.selectedOptions).map(o => o.value);
+      const data = countries.filter(c => selected.includes(c.name));
+      const details = document.getElementById("compareDetails");
+      if (data.length < 2) {
+        if (details) details.innerHTML = "<p style='color:#c0392b'>Select at least 2 countries (hold Ctrl or Cmd to multi-select).</p>";
+        return;
+      }
+      const canvas = document.getElementById("compareChart");
+      if (!canvas) return;
+      const ctx = canvas.getContext("2d");
+      if (window.compareChart) window.compareChart.destroy();
+      window.compareChart = new Chart(ctx, {
+        type: "radar",
+        data: {
+          labels: ["Econ Free", "Pol Free", "GDP Rel", "Life Exp"],
+          datasets: data.map((c, i) => ({
+            label: c.name,
+            data: [c.econ, c.pol, c.gdpRel, c.life],
+            borderColor: ["#c0392b", "#2c3e50", "#27ae60", "#e67e22", "#8e44ad"][i % 5],
+            backgroundColor: "rgba(192,57,43,0.1)",
+            borderWidth: 2
+          }))
+        },
+        options: {
+          responsive: true,
+          scales: { r: { min: 0, max: 100, ticks: { stepSize: 20 } } },
+          plugins: { legend: { position: "bottom" } }
+        }
+      });
+      if (details) {
+        details.innerHTML = data.map(c =>
+          `<p><strong>${c.name}</strong>: Score ${c.score} | Econ ${c.econ} | Pol ${c.pol} | Life ${c.life}</p>`
+        ).join("");
+      }
+    });
+  }
+}
+
+// Run after DOM and Chart are ready
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initSite);
+} else {
+  initSite();
+}
